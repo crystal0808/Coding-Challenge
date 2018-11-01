@@ -79,7 +79,37 @@ export default connect(state => {
   let balance = [];
 
   /* YOUR CODE GOES HERE */
+    let userInput = state.userInput;
+    let accounts = state.accounts;
+    let journalEntries = state.journalEntries;
 
+    for (let i = 0; i < accounts.length; i++) {
+        if (accounts[i].ACCOUNT>= userInput.startAccount&&
+            accounts[i].ACCOUNT <= userInput.endAccount){
+            for (let j = 0; j < journalEntries.length; j++) {
+                if (journalEntries[j].ACCOUNT == accounts[i].ACCOUNT)
+                {
+                    if (journalEntries[j].PERIOD >= userInput.startPeriod &&
+                        journalEntries[j].PERIOD <= userInput.endPeriod) {
+                        var debit = journalEntries[j].DEBIT;
+                        var credit = journalEntries[j].CREDIT
+                        if (balance[i] != undefined) {
+                            debit += balance[i].DEBIT
+                            credit += balance[i].CREDIT
+                        }
+                        balance[i] = {
+                            ACCOUNT: accounts[i].ACCOUNT,
+                            DESCRIPTION: accounts[i].LABEL,
+                            DEBIT: debit,
+                            CREDIT: credit,
+                            BALANCE: debit - credit,
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
 

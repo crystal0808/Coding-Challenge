@@ -1,6 +1,6 @@
 export const stringToDate = str => {
   if (str === '*') {
-    return new Date(str);
+    return NaN;
   }
 
   const [month, year] = str.split('-');
